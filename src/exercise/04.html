@@ -7,26 +7,34 @@
   <script src="https://unpkg.com/react-dom@17.0.0/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.12.4/babel.js"></script>
   <script type="text/babel">
-    function Message({children}) {
-      return <div className="message">{children}</div>
+    const PropTypes = {
+      string(props, propName, componentName) {
+        const type = typeof props[propName]
+        if (type !== 'string') {
+          return new Error(
+            `Hey, the component ${componentName} needs the prop ${propName} of type "string" but received a ${type}`,
+          )
+        }
+      },
     }
 
-    //Exercise
+    function Message({subject, greeting}) {
+      return (
+        <div className="message">
+          {greeting}, {subject}
+        </div>
+      )
+    }
 
-    // const element = (
-    //   <div className="container">
-    //     {message({children: 'Hello World'})}{' '}
-    //     {message({children: 'Goodbye World'})}
-    //   </div>
-    // )
-
-    //Extra credit
-    //1 using a custom component with React.createElement
+    Message.propTypes = {
+      subject: PropTypes.string,
+      greeting: PropTypes.string,
+    }
 
     const element = (
       <div className="container">
-        <Message>Hello World</Message>
-        <Message>Goodbye World</Message>
+        <Message subject="World" greeting="Hello" />
+        <Message subject={2} greeting="Goodbye" />
       </div>
     )
 
